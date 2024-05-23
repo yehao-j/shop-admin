@@ -1,8 +1,29 @@
 <template>
-  <div>
-    <el-row class="bg-indigo-500" style="height: 100vh;">
-      <el-col :span="16">左边</el-col>
-      <el-col :span="8" class="bg-light-50">右边</el-col>
-    </el-row>
+  <div class="parent">
+    <div class="child"></div>
+    <div class="child"></div>
+    <div class="child"></div>
   </div>
 </template>
+
+
+<style>
+  .parent {
+    width: 800px;
+    height: 500px;
+    border: 2px solid red;
+    margin: 100px;
+
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .child {
+    width: 120px;
+    height: 60px;
+    background-color: blue;
+  }
+</style>
