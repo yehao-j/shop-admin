@@ -11,7 +11,7 @@ require('../../form/index.js');
 var iconsVue = require('@element-plus/icons-vue');
 var transfer = require('./transfer.js');
 require('./composables/index.js');
-var transferPanel = require('./transfer-panel2.js');
+var transferPanel = require('./transfer-panel.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
 var index = require('../../../hooks/use-locale/index.js');
 var index$1 = require('../../../hooks/use-namespace/index.js');

@@ -7,7 +7,7 @@ import '../../form/index.mjs';
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
 import { transferProps, transferEmits } from './transfer.mjs';
 import './composables/index.mjs';
-import TransferPanel from './transfer-panel2.mjs';
+import TransferPanel from './transfer-panel.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
 import { useLocale } from '../../../hooks/use-locale/index.mjs';
 import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
