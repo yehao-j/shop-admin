@@ -61,9 +61,8 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue"
+import { reactive, ref, onMounted, onBeforeUnmount } from "vue"
 import { toast } from "@/composables/util"
-import { getinfo, login } from "@/api/index"
 import { useRouter } from 'vue-router'
 import { setToken } from "@/composables/auth"
 import { useStore } from "vuex"
@@ -104,24 +103,31 @@ const submitForm = () => {
         }
         loading.value = true
 
-        login(form.username, form.password)
-            .then((res) => {
-                toast('登录成功')
+        store.dispatch('login', form)
+        .then(res => {
+            toast('登录成功')
+            router.push('/')
+        })
+        .finally(() => {
+            loading.value = false
+        })
+    })
+}
 
-                setToken(res.token)
+function onKeyUp(e) {
+    if (e.key == 'Enter') {
+        submitForm()
+    }
+}
 
-                getinfo().then(res2 => {
-                    store.commit('SET_USERINFO', res2)
-                })
+onMounted(() => {
+    document.addEventListener('keyup', onKeyUp)
+})
 
-                // 跳转后台首页
-                router.push('/')
-            })
-            .finally(() => {
-                loading.value = false
-            })
-    });
-};
+onBeforeUnmount(() => {
+    document.removeEventListener('keyup', onKeyUp)
+})
+
 </script>
 
 <style>

@@ -1,8 +1,12 @@
 import router from '@/router'
 import { getToken } from '@/composables/auth'
+import store from './store'
+import { hideFullLoading, showFullLoading } from './composables/util'
 
 // 全局前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+    showFullLoading()
+
     const token = getToken()
     
     // 没有登录，强制跳转回登录页
@@ -15,5 +19,16 @@ router.beforeEach((to, from, next) => {
         return next({ name: from.name ? from.name : 'home' })
     }
 
+    // 如果用户登录，自动获取用户信息，并存储在vuex中
+    if (token) {
+        await store.dispatch('getinfo')
+    }
+
+    // 设置页面标题
+    let title = (to.meta.title ? to.meta.title : "") + "abc"
+    document.title = title
+
     next()
 })
+
+router.afterEach((to, from) => hideFullLoading())
