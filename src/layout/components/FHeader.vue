@@ -5,7 +5,10 @@
             编程
         </span>
 
-        <el-icon class="icon-btn"><Fold /></el-icon>
+        <el-icon class="icon-btn" @click="$store.commit('handleAsideWidth')">
+            <Fold v-if="!$store.state.isCollapse"/>
+            <Expand v-else/>
+        </el-icon>
         <el-tooltip effect="dark" content="刷新" placement="top-start">
             <el-icon class="icon-btn" @click="handleRefresh"
                 ><Refresh
@@ -45,11 +48,11 @@
         </div>
     </div>
 
-    <el-drawer
-        v-model="showDrawer"
-        close-on-click-modal="false"
-        size="45%"
+    <form-drawer
+        ref="formDrawerRef"
         title="修改密码"
+        destroyOnClose
+        @submit="submitForm"
     >
         <el-form ref="formRef" :model="form" :rules="rules">
             <el-form-item prop="oldpassword" label="旧密码" label-width="80px">
@@ -76,79 +79,19 @@
                     show-password
                 />
             </el-form-item>
-            <el-form-item>
-                <el-button
-                    type="primary"
-                    :loading="loading"
-                    @click="submitForm(formRef)"
-                    >提交</el-button
-                >
-            </el-form-item>
         </el-form>
-    </el-drawer>
+    </form-drawer>
 </template>
 
 <script setup>
-import { logout, updatePassword } from "@/api";
-import { showModal, toast } from "@/composables/util";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
 import { useFullscreen } from "@vueuse/core";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
+import FormDrawer from "@/components/FormDrawer.vue";
+import { useRePassword, useLogout } from "@/composables/useManager";
 
-const form = reactive({
-    oldpassword: "",
-    password: "",
-    repassword: "",
-});
-
-const loading = ref(false);
-
-const rules = reactive({
-    oldpassword: [
-        {
-            required: true,
-            message: "旧密码不为空",
-            trigger: "blur",
-        },
-    ],
-    password: [
-        {
-            required: true,
-            message: "新密码不为空",
-            trigger: "blur",
-        },
-    ],
-    repassword: [
-        {
-            required: true,
-            message: "确认密码不为空",
-            trigger: "blur",
-        },
-    ],
-});
-
-const formRef = ref(null);
-
-const submitForm = () => {
-    formRef.value.validate((valid) => {
-        if (!valid) {
-            return false;
-        }
-        loading.value = true;
-
-        updatePassword(form)
-            .then((res) => {
-                toast("修改密码成功，请重新登录");
-
-                store.dispatch("logout");
-                router.push("/login");
-            })
-            .finally(() => {
-                loading.value = false;
-            });
-    });
-};
+const { formDrawerRef, formRef, rules, form, submitForm, openRePasswordForm } =
+    useRePassword();
+const { handleLogout } = useLogout();
 
 const showDrawer = ref(false);
 
@@ -158,27 +101,10 @@ const handleCommand = (c) => {
             handleLogout();
             break;
         case "rePassword":
-            showDrawer.value = true;
+            openRePasswordForm();
             break;
     }
 };
-
-const router = useRouter();
-const store = useStore();
-
-function handleLogout() {
-    showModal("是否退出登录")
-        .then((res) => {
-            logout().finally(() => {
-                store.dispatch("logout");
-
-                router.push("/login");
-
-                toast("退出登录成功");
-            });
-        })
-        .catch((err) => {});
-}
 
 function handleRefresh() {
     location.reload();

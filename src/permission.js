@@ -1,9 +1,11 @@
-import router from '@/router'
+import { router, addRoutes } from '@/router'
 import { getToken } from '@/composables/auth'
 import store from './store'
 import { hideFullLoading, showFullLoading } from './composables/util'
 
 // 全局前置守卫
+let hasUserInfo = false
+
 router.beforeEach(async (to, from, next) => {
     showFullLoading()
 
@@ -20,8 +22,12 @@ router.beforeEach(async (to, from, next) => {
     }
 
     // 如果用户登录，自动获取用户信息，并存储在vuex中
-    if (token) {
-        await store.dispatch('getinfo')
+    if (token && !hasUserInfo) {
+        // 解构出menus
+        let { menus } = await store.dispatch('getinfo')
+        hasUserInfo = true
+        // 动态添加路由
+        addRoutes(menus)
     }
 
     // 设置页面标题
