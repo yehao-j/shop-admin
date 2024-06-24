@@ -2,6 +2,7 @@
 import { getstatistics1 } from "@/api";
 import { useStore } from "vuex";
 import { ref } from "vue";
+import CountTo from '@/components/CountTo.vue'
 
 const store = useStore();
 const panels = ref([]);
@@ -61,9 +62,9 @@ getstatistics1().then((res) => {
                             </el-tag>
                         </div>
                     </template>
-                    <span class="text-3xl font-bold text-gray-500">{{
-                        item.value
-                    }}</span>
+                    <span class="text-3xl font-bold text-gray-500">
+                        <CountTo :value="item.value"/>
+                    </span>
                     <el-divider />
                     <div class="flex justify-between text-sm text-gray-500">
                         <span>{{ item.subTitle }}</span>
