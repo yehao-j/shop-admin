@@ -32,7 +32,7 @@ const submit = () => emit('submit')
 
 const loading = ref(false)
 
-// 向父组件暴露一下方法
+// 向父组件暴露以下方法
 defineExpose({
     open,
     close,

@@ -1,17 +1,3 @@
-<script setup>
-import { getstatistics1 } from "@/api";
-import { useStore } from "vuex";
-import { ref } from "vue";
-import CountTo from '@/components/CountTo.vue'
-
-const store = useStore();
-const panels = ref([]);
-
-getstatistics1().then((res) => {
-    panels.value = res.panels;
-});
-</script>
-
 <template>
     <div>
         <el-row :gutter="20" v-if="panels.length == 0">
@@ -37,7 +23,7 @@ getstatistics1().then((res) => {
                                 class="flex justify-between text-sm text-gray-500"
                             >
                                 <el-skeleton-item
-                                    variant="  text"
+                                    variant="text"
                                     style="width: 50%"
                                 />
                                 <el-skeleton-item
@@ -63,7 +49,7 @@ getstatistics1().then((res) => {
                         </div>
                     </template>
                     <span class="text-3xl font-bold text-gray-500">
-                        <CountTo :value="item.value"/>
+                        <CountTo :value="item.value" />
                     </span>
                     <el-divider />
                     <div class="flex justify-between text-sm text-gray-500">
@@ -74,4 +60,55 @@ getstatistics1().then((res) => {
             </el-col>
         </el-row>
     </div>
+
+    <IndexNav />
+
+    <el-row :gutter="20">
+        <el-col :span="12" :offset="0">
+            <IndexChart v-permission="['getStatistics3,GET']"/>
+        </el-col>
+        <el-col :span="12" :offset="0">
+            <IndexCard
+                class="mb-3"
+                title="店铺及商品提示"
+                tip="店铺及商品提示"
+                :btns="goods"
+            />
+            <IndexCard
+                title="交易提示"
+                tip="需要立即处理的交易订单"
+                :btns="order"
+            />
+        </el-col>
+    </el-row>
 </template>
+
+<script setup>
+import { getstatistics1, getstatistics2 } from "@/api";
+import { useStore } from "vuex";
+import { ref } from "vue";
+import CountTo from "@/components/CountTo.vue";
+import IndexNav from "@/components/IndexNav.vue";
+import IndexChart from "@/components/IndexChart.vue";
+import IndexCard from "@/components/IndexCard.vue";
+
+const store = useStore();
+const panels = ref([]);
+const goods = ref([]);
+const order = ref([]);
+
+getstatistics1().then((res) => {
+    for (let i = 0; i < res.panels.length; i++) {
+        let item = res.panels[i]
+        if (item.unitColor.length == 0) {
+            item.unitColor = 'primary'
+        }
+    }
+    panels.value = res.panels;
+});
+
+getstatistics2().then((res) => {
+    goods.value = res.goods;
+    order.value = res.order;
+});
+</script>

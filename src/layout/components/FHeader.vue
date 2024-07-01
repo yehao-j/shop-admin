@@ -117,6 +117,7 @@ const { isFullscreen, toggle } = useFullscreen();
 .f-header {
     @apply flex bg-indigo-700 text-light-50 fixed left-0 right-0 top-0 items-center;
     height: 64px;
+    z-index: 1000;
 }
 
 .logo {

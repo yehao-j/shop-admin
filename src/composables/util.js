@@ -5,7 +5,7 @@ import nProgress from "nprogress";
 export function toast(
     message,
     type = "success",
-    dangerouslyUseHTMLString = false
+    dangerouslyUseHTMLString = true
 ) {
     ElNotification({
         message,
