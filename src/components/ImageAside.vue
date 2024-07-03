@@ -1,8 +1,8 @@
 <template>
-    <el-aside width="200px" class="image-aside" v-loading="loading">
+    <el-aside class="image-aside" v-loading="loading">
         <div class="top">
             <AsideList
-                :active="activeId == item.id"
+                :isActive="activeId == item.id"
                 v-for="(item, index) in list"
                 :key="index"
                 @edit="handleEdit(item)"
@@ -89,7 +89,7 @@ function getData(p = null) {
     getImageClassList(currentPage.value)
         .then((res) => {
             total.value = res.totalCount;
-            list.value = res.list;
+            list.value = res.list
             if (res.list.length > 0) {
                 handleChangeActiveId(res.list[0].id);
             }
@@ -170,6 +170,7 @@ defineExpose({
 .image-aside {
     border-right: 1px solid #eeeeee;
     position: relative;
+    width: 200px;
 }
 
 .image-aside .top {

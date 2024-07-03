@@ -37,25 +37,5 @@ const handleOpenUpload = () => {
 .image-header {
     border-bottom: 1px solid #eeeeee; 
     @apply flex items-center;
-}
-
-.image-aside {
-    border-right: 1px solid #eeeeee;
-    position: relative;
-}
-
-.image-main {
-    position: relative;
-}
-
-.image-aside .top, .image-main .top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 50px;
-    overflow-y: auto;
-}
-
- 
+} 
 </style>

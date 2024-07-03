@@ -1,33 +1,40 @@
 <template>
-    <div class="aside-list" :class="{ active: active }">
+    <div class="aside-list" :class="{ active: isActive }">
         <span class="truncate"><slot /></span>
         <el-button
             class="ml-auto px-0"
             text
             type="primary"
             size="small"
-            @click="$emit('edit')"
+            @click.stop="$emit('edit')"
         >
             <el-icon :size="16"><Edit /></el-icon>
         </el-button>
-        <el-popconfirm title="是否要删除该分类？" confirm-button-text="确认" cancel-button-text="取消" @confirm="$emit('delete')">
-            <template #reference>
-                <el-button
-                    class="!ml-0 !mr-1"
-                    text
-                    type="primary"
-                    size="small"
-                >
-                    <el-icon :size="16"><Close /></el-icon>
-                </el-button>
-            </template>
-        </el-popconfirm>
+        <span @click.stop="() => {}">
+            <el-popconfirm
+                title="是否要删除该分类？"
+                confirm-button-text="确认"
+                cancel-button-text="取消"
+                @confirm="$emit('delete')"
+            >
+                <template #reference>
+                    <el-button
+                        class="!ml-0 !mr-1"
+                        text
+                        type="primary"
+                        size="small"
+                    >
+                        <el-icon :size="16"><Close /></el-icon>
+                    </el-button>
+                </template>
+            </el-popconfirm>
+        </span>
     </div>
 </template>
 
 <script setup>
 defineProps({
-    active: {
+    isActive: {
         type: Boolean,
         default: false,
     },
