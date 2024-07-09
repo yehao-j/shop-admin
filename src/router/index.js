@@ -89,6 +89,22 @@ export const router = createRouter({
                         title: "优惠券列表",
                     },
                 },
+                {
+                    path: "/manager/list",
+                    name: "/manager/list",
+                    component: () => import("@/views/manager/List.vue"),
+                    meta: {
+                        title: "管理员列表",
+                    },
+                },
+                {
+                    path: "/access/list",
+                    name: "/access/list",
+                    component: () => import("@/views/access/List.vue"),
+                    meta: {
+                        title: "菜单列表",
+                    },
+                },
             ],
         },
         {
